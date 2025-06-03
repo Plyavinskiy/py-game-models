@@ -7,13 +7,21 @@ class Race(models.Model):
 
 
 class Skill(models.Model):
-    name = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=255)
     bonus = models.CharField(max_length=255)
     race = models.ForeignKey(
         Race,
         on_delete=models.CASCADE,
         related_name="skills"
     )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["name", "race"],
+                name="unique_skill_per_race"
+            )
+        ]
 
 
 class Guild(models.Model):
